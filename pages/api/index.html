@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CNOL Online - Inscription</title>
+</head>
+<body>
+  <h1>Inscription au CNOL 2025</h1>
+  <form id="registration-form">
+    <label>Nom : <input type="text" name="nom" required></label><br>
+    <label>Prénom : <input type="text" name="prenom" required></label><br>
+    <label>Email : <input type="email" name="email" required></label><br>
+    <label>Téléphone : <input type="tel" name="telephone" required></label><br>
+    <label>Ville : <input type="text" name="ville" required></label><br>
+    <label>Profession :
+      <select name="fonction" required>
+        <option value="">--Sélectionnez--</option>
+        <option value="Opticien">Opticien</option>
+        <option value="Ophtalmologue">Ophtalmologue</option>
+        <option value="Orthoptiste">Orthoptiste</option>
+        <option value="Étudiant">Étudiant</option>
+        <option value="Presse">Presse</option>
+        <option value="Autre">Autre</option>
+      </select>
+    </label><br><br>
+    <button type="submit">Envoyer</button>
+  </form>
+
+  <div id="confirmation" style="display:none;">
+    <h2>Merci pour votre inscription !</h2>
+    <p>Votre demande sera validée par l'administration.</p>
+  </div>
+
+  <script>
+    const form = document.getElementById("registration-form");
+    form.addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      const res = await fetch("/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        form.style.display = "none";
+        document.getElementById("confirmation").style.display = "block";
+      } else {
+        alert("Erreur d'enregistrement.");
+      }
+    });
+  </script>
+</body>
+</html>
