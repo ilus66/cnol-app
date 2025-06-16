@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Testing
+coverage/
+
+# Production
+.next/
+out/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env
+
+# Editor folders
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# System
+*.log
+*.swp
+*.tmp
+
+# Vercel / Netlify
+.vercel
+.netlify
+
+# Misc
+*.tgz
+*.gz
+*.zip
+
+# Mailer (si non utilisé en prod)
+mailer/
+
+# Pages de test (optionnel)
+pages/test-*.js
+
+# Glide / Google credentials (si jamais tu les ajoutes)
+google-credentials.json
