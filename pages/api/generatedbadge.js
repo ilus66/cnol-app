@@ -1,10 +1,16 @@
-const path = require('path');
 const { PDFDocument, rgb, StandardFonts } = require('pdf-lib');
 const QRCode = require('qrcode');
-const fs = require('fs');
 
-const posterPath = path.join(process.cwd(), 'public', 'cnol2025-poster.jpg');
-const logoPath = path.join(process.cwd(), 'public', 'logo-cnol.png');
+// URLs publiques des images (doivent être dans /public sur Vercel)
+const posterUrl = 'https://cnol-app.vercel.app/cnol2025-poster.jpg';
+const logoUrl = 'https://cnol-app.vercel.app/logo-cnol.png';
+
+// Fonction utilitaire pour charger une image depuis une URL
+const fetchImageAsBytes = async (url) => {
+    const res = await fetch(url);
+    const buffer = await res.arrayBuffer();
+    return new Uint8Array(buffer);
+};
 
 // Fonction principale
 async function generateBadge(userData) {
@@ -18,7 +24,7 @@ async function generateBadge(userData) {
         const { name, function: userFunction, city, email, userId } = userData;
 
         // Logo CNOL
-        const logoImageBytes = fs.readFileSync(logoPath);
+        const logoImageBytes = await fetchImageAsBytes(logoUrl);
         const logoImage = await pdfDoc.embedPng(logoImageBytes);
         const logoDims = logoImage.scale(0.2);
         page.drawImage(logoImage, { x: 20, y: 750, width: logoDims.width, height: logoDims.height });
@@ -32,7 +38,7 @@ async function generateBadge(userData) {
         });
 
         // Affiche CNOL
-        const posterImageBytes = fs.readFileSync(posterPath);
+        const posterImageBytes = await fetchImageAsBytes(posterUrl);
         const posterImage = await pdfDoc.embedJpg(posterImageBytes);
         const posterDims = posterImage.scale(0.21);
         page.drawImage(posterImage, {
@@ -117,7 +123,6 @@ async function generateBadge(userData) {
 
         const pdfBytes = await pdfDoc.save();
 
-        // ✅ Log sécurisé
         console.log(`✅ Badge généré en mémoire pour ${userId} (${name})`);
 
         return pdfBytes;
@@ -129,3 +134,4 @@ async function generateBadge(userData) {
 }
 
 module.exports = { generateBadge };
+
